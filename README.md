@@ -28,7 +28,7 @@ layui >=2.2.5
 
 2.预览地址 http://ui.cymall.xin/demo/transfer/index.html 
 
-3.下载 链接： https://pan.baidu.com/s/1Vo_GAozyP2vps3bXBWkJew 密码：rl9p
+3.下载链接： https://pan.baidu.com/s/1Vo_GAozyP2vps3bXBWkJew 密码：rl9p
 
 ### 原版+1版
 
