@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>demo</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="css/cyType.css" media="all">
+
+    <link rel="stylesheet" href="css/font-awesome.min.css" media="all">
+    <script src="layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/PinyinMatch.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script>
+        if(!/^http(s*):\/\//.test(location.href)){
+            alert('请部署到localhost上查看该演示');
+        }
+    </script>
+    <script src="js/transferTool.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+<div class="layui-input-normal layui-form" style="margin:100px 580px;">
+    <button class="layui-btn" lay-submit="" lay-filter="submitForm" ><i class="fa fa-floppy-o">&nbsp;</i>提交表单</button>
+    <div id="tranferDiv" cyType="transferTool" value="1111210000,1111340000"></div>
+</div>
+
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        //监听提交///保存或修改
+        form.on('submit(submitForm)', function (data) {
+            layer.alert(JSON.stringify(data.field));
+            return false;
+        });
+
+    });
+     
+    //config的设置是全局的
+    layui.config({
+        base: 'js/' //假设这是你存放拓展模块的根目录
+    }).use(['transferTool'], function ()
+    {
+        var transferTool = layui.transferTool;
+ 
+        transferTool.init({
+            elem: "#tranferDiv",
+            seletedValue: "1111210000,1111340000",  //已选,变量逗号隔开
+            url: 'json/list.json',  //url获取数据
+            name: 'province',  //form表单获取的结果值
+            disabledValue: "2111120000,111150000,1111340000"   //不可选,变量逗号隔开
+        });
+    });
+
+
+</script>
+</body>
+</html>
