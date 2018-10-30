@@ -41,7 +41,9 @@ layui >=2.2.6
 2. 添加拼音搜索；
 
 [【原文】整合 layui 穿梭框组件](https://fly.layui.com/jie/30248/)
+
 [【引用】拼音搜索用到的JS，用法简单!](https://github.com/xmflswood/pinyin-match)
+
 [版本库地址](https://gitee.com/FLB0821/layui_widget/tree/master)
 
 
