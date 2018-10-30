@@ -1,6 +1,6 @@
 # layui-transfer plus
 
-因项目需要，用户权限管理需要使用穿梭框来绑定角色，在两个本本的基础上优化了一版。
+因项目需要，用户权限管理需要使用穿梭框来绑定角色，在两个版本的基础上优化了一版。
 
 ## 效果展示
 
@@ -21,15 +21,20 @@ layui >=2.2.5
 ### 原版
 
 [原版穿梭框组件](https://fly.layui.com/jie/30248/)
+
 1.效果如下
+
 ![原版穿梭框](etc/1.png)
+
 2.预览地址 http://ui.cymall.xin/demo/transfer/index.html 
 3.下载 链接： https://pan.baidu.com/s/1Vo_GAozyP2vps3bXBWkJew 密码：rl9p
 
 ### 原版+1版
 
 [【原文】原版+1版](https://blog.csdn.net/qq_28462305/article/details/81842187)
+
 ![原版+1版本](etc/2.gif)
+
 基于前辈的组件修改，layui风格，已修改成layui第三封控件规范
 1. 在原基础上添加多选；
 2. 添加拼音搜索；
