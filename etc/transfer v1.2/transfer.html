@@ -15,7 +15,7 @@
     <script src="js/PinyinMatch.js"></script>
     <script src="js/jquery-1.10.2.min.js"></script>
     <script>
-        if (!/^http(s*):\/\//.test(location.href)) {
+        if(!/^http(s*):\/\//.test(location.href)){
             alert('请部署到localhost上查看该演示');
         }
     </script>
@@ -24,57 +24,37 @@
 </head>
 <body>
 <div class="layui-input-normal layui-form" style="margin:100px 300px;">
-    <div class="layui-row layui-col-space5">
-        <div class="layui-col-md2" style="line-height: 36px;">
-            <div name="stunum"></div>
-        </div>
-        <div class="layui-col-md3" style="line-height: 36px;">
-            <input type="checkbox" lay-filter="avg" lay-skin="primary" class="avgbtn">
-            <label>平均分配至选中销售</label>
-        </div>
-        <div class="layui-col-md3">
-            <button class="layui-btn fork" lay-submit="" lay-filter="submitForm"><i class="fa fa-floppy-o">&nbsp;</i>确认分配
-            </button>
-        </div>
-    </div>
-    <br/>
+    <button class="layui-btn" lay-submit="" lay-filter="submitForm" ><i class="fa fa-floppy-o">&nbsp;</i>提交表单</button>
     <div id="tranferDiv" cyType="transferTool" value="1111210000,1111340000"></div>
 </div>
 
 <script>
     layui.use('form', function () {
         var form = layui.form;
-        //监听提交
-        form.verify({
-            int: function (value, item) {
-                if (!value.toString().match(/^(\d)+$/)) {
-                    return '请输入整数';
-                }
-            }
-        });
+        //监听提交///保存或修改
         form.on('submit(submitForm)', function (data) {
-            // TODO 销售分配数量和应小于学员数量，后端验证
             layer.alert(JSON.stringify(data.field));
             return false;
         });
 
     });
-
-    var stunum = 5;// 初始化学员数量
-    // //config的设置是全局的
+     
+    //config的设置是全局的
     layui.config({
         base: 'js/' //假设这是你存放拓展模块的根目录
-    }).use(['transferTool'], function () {
+    }).use(['transferTool'], function ()
+    {
         var transferTool = layui.transferTool;
-
+ 
         transferTool.init({
             elem: "#tranferDiv",
             seletedValue: "1,2",  //已选,变量逗号隔开
-            url: 'json/sales.json',  //url获取数据
-            name: 'fork',  //form表单获取的结果值
+            url: 'json/roles.json',  //url获取数据
+            name: 'province',  //form表单获取的结果值
             disabledValue: "3,4,5"   //不可选,变量逗号隔开
         });
     });
+
 
 </script>
 </body>

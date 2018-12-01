@@ -1,0 +1,75 @@
+{
+  "code": 0,
+  "data": [
+    {
+      "id": "1",
+      "username": "超级管理员",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    },
+    {
+      "id": "2",
+      "username": "新媒体",
+      "area": "校区",
+      "position": "职位",
+      "state": 0
+    },
+    {
+      "id": "3",
+      "username": "运营总监",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    },
+    {
+      "id": "4",
+      "username": "客服总监",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    },
+    {
+      "id": "5",
+      "username": "客服",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    },
+    {
+      "id": "6",
+      "username": "UI",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    },
+    {
+      "id": "7",
+      "username": "产品总监",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    },
+    {
+      "id": "8",
+      "username": "产品经理",
+      "area": "校区",
+      "position": "职位",
+      "state": 0
+    },
+    {
+      "id": "9",
+      "username": "CTO",
+      "area": "校区",
+      "position": "职位",
+      "state": 0
+    },
+    {
+      "id": "10",
+      "username": "程序员",
+      "area": "校区",
+      "position": "职位",
+      "state": 1
+    }
+  ]
+}

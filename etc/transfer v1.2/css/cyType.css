@@ -191,6 +191,10 @@ dd .layui-laypage {
     border-radius: 10px;
 }
 
+.signed-red div>span{
+    color: red!important;
+}
+
 .transfer-div {
     width: 100%;
     height: 300px;

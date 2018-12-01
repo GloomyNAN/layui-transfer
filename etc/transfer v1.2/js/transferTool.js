@@ -1,17 +1,14 @@
-/*
- * @description:核心JS
- * @author GloomyNAN <GloomyNAN@gmail.com>
- * @copyright 2018 GloomyNAN
- *
- * @link https://github.com/GloomyNAN
- * @link http://gloomynan.com
- * @create: 2018-12-01 11:16:37
+/**
+ * Created by 陈熠 on 2017/6/21
+ * Update by Li on 2018/8/19
+ * email   :  228112142@qq.com
+ * q群      ：     275846351
+ * 穿梭框
  */
-layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
+layui.define(['element', 'form',], function (exports) {
     var $ = layui.jquery,
         layer = layui.layer,
-        table = layui.table,
-        form = layui.form;
+        form = layui.form
 
     var config = {
         elem: undefined,
@@ -22,15 +19,12 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
         disabledValue: "",  //不可选,变量逗号隔开
         seletedValue: "",  //已选,变量逗号隔开
         cascade: false,  //级联
-    };
+    }
 
-    var countSelectedItems; //已选数量
-    var countAllItems;//左侧所有选项
-    var countCheckedItems;//左侧选择数量
+    var countSelectedItems = 0; //逸轩数量
+    var countAllItems = 0;//左侧所有选项
+    var countCheckedItems = 0;//左侧选择数量
 
-    // 初始化学员数量
-    $("[name = 'stunum']").text('学员数量：' + stunum);
-    $("[name = 'stunum']").attr('lay-stunum', stunum);
 
     var transferTool = {
         /* 入口函数 */
@@ -134,12 +128,11 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
             var _name = config.name;
 
             if (_name == "") {
-                _name = "default";
+                _name = "default[]";
             }
-            //TODO 此版本暂时无用
-            // if (_name.indexOf("[") == -1) {
-            //     _name += "";
-            // }
+            if (_name.indexOf("[") == -1) {
+                _name += "[]";
+            }
 
             //获取下拉控件的默认值
             var _value = config.seletedValue;
@@ -188,17 +181,14 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
 
 
                 for (var i = 0; i < data.length; i++) {
+                    var red = '';
+                    if (data[i].state == 0) {
+                        red = 'signed-red';
+                    }
+
                     //设置默认值(向右侧插入元素)
                     if (_values.indexOf(data[i].id) == -1) {
-                        // 左侧插入数据
-                        var _input = [
-                            '<tr lay-value="' + data[i].id + '" lay-keywords="' + data[i].area + '|' + data[i].position + '" lay-username="' + data[i].username + '" lay-area="' + data[i].area + '"  lay-position="' + data[i].position + '">',
-                            '<td><input type="checkbox" lay-filter="transferLeftChecked" lay-skin="primary"></td>',
-                            '<td>' + data[i].username + '</td>',
-                            '<td>' + data[i].area + '</td>',
-                            '<td>' + data[i].position + '</td>',
-                            '</tr>'
-                        ].join("");
+                        var _input = '<dd lay-value="' + data[i].id + '" lay-title="' + data[i].name + '" class="' + red + '"><input  type="checkbox" lay-filter="transferLeftChecked" title="' + data[i].name + '" lay-skin="primary"></dd>';
                         //设置禁用
                         if (_disableds.indexOf(data[i].id) != -1) {
                             _input = _input.replace("<input", "<input disabled ")
@@ -206,22 +196,12 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
                         leftList += _input;
                         countLeft++;
                     }
-                    // 右侧插入数据
+                    //像左侧插入元素
                     else {
-                        var _input = [
-                            '<tr lay-value="' + data[i].id + '" lay-keywords="' + data[i].area + '|' + data[i].position + '" lay-username="' + data[i].username + '" lay-area="' + data[i].area + '"  lay-position="' + data[i].position + '">',
-                            '<td><input type="hidden" name="' + _name + '[id][]" value="' + data[i].id + '" >' +
-                            '<input type="checkbox" lay-filter="transferRightChecked" lay-skin="primary"></td>',
-                            '<td>' + data[i].username + '</td>',
-                            '<td>' + data[i].area + '</td>',
-                            '<td hidden>' + data[i].position + '</td>',
-                            '<td><input type="text" name="' + _name + '[sum][]" lay-verify="number|int" value="0" style="width: 50px"></td>',
-                            '</tr>'
-                        ].join("");
-
+                        var _input = '<dd lay-value="' + data[i].id + '"  lay-title="' + data[i].name + '" class="' + red + '"><input type="hidden" name="' + _name + '" value="' + data[i].id + '"><input lay-filter="transferRightChecked"   type="checkbox"  title="' + data[i].name + '" lay-skin="primary"></dd>';
                         //设置禁用
                         if (_disableds.indexOf(data[i].id) != -1) {
-                            _input = _input.replace("<input", "<input disabled ");
+                            _input = _input.replace("<input", "<input disabled ")
                         }
                         rightList += _input;
                         countRight++;
@@ -230,10 +210,6 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
                 }
                 countAllItems = countLeft;
                 countSelectedItems = countRight;
-                if (countRight <= 0) {
-                    $('.fork').addClass("layui-btn-disabled");
-                    $('.fork').attr("disabled", "disabled");
-                }
             }
             /** 渲染结果**/
             var outHtml =
@@ -243,20 +219,17 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
                     '<dd lay-value="" class="transfer-title-div" style="height:26px!important">',
                     '<input type="checkbox" lay-filter="transferLeftCheckedAll" class="selectAllLeft" style="float:left;max-width:30px;" title="" lay-skin="primary">',
                     '<div class="transfer-count" id="count-left">0/0项></div>',
-                    '<span class="count-tig">未勾选</span>',
+                    '<span class="count-tig">未拥有</span>',
                     '</dd>',
                     // _searchHtml,
                     '<div class="transfer-search-div">',
                     '<i class="layui-icon  drop-search-btn"></i>',
-                    '<input class="layui-input search_condition_left" placeholder="请输入校区\\销售姓名">',
+                    '<input class="layui-input search_condition_left" placeholder="请输入搜索内容">',
                     '<i class="layui-icon clear-btn search-clear-btn-left">&#x1006;</i>',
                     '</div>',
 
                     '<div class="transfer-div">',
-                    '<table class="layui-table" lay-size="sm">',
-                    '<thead><tr><th>勾选</th><th>销售</th><th>校区</th><th>职位</th></tr></thead><tbody>',
                     leftList,
-                    '</tbody></table>',
                     '</div>',
                     '</div>',
                     '<div class="transfer-btn transfer-to-right">',
@@ -270,77 +243,35 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
                     '<dd lay-value="" class="transfer-title-div" style="height:26px!important">',
                     '<input type="checkbox" lay-filter="transferRightCheckedAll" class="selectAllRight" style="float:left;max-width:30px;" title="" lay-skin="primary">',
                     '<div class="transfer-count" id="count-right">0项目></div>',
-                    '<span class="count-tig">已勾选</span>',
+                    '<span class="count-tig">已拥有</span>',
                     '</dd>',
                     // _searchHtml,
                     '<div class="transfer-search-div">',
                     '<i class="layui-icon  drop-search-btn"></i>',
-                    '<input class="layui-input search_condition_right" placeholder="请输入校区\\销售姓名">',
+                    '<input class="layui-input search_condition_right" placeholder="请输入搜索内容">',
                     '<i class="layui-icon  clear-btn search-clear-btn-right">&#x1006;</i>',
                     '</div>',
                     '<div class="transfer-div">',
-                    '<table class="layui-table" lay-size="sm">',
-                    '<thead><tr><th>勾选</th><th>销售</th><th>校区</th><th hidden>职位</th><th>分配数量</th></tr></thead><tbody>',
                     rightList,
-                    '</tbody></table>',
                     '</div>',
                     '</div>',
                     '</div>'
                 ].join(""));
             $(config.elem).append(outHtml);
             form.render();
-            // 元素统计
+            // 角色统计
             $("#count-left").text(countAllItems + "项");
             $("#count-right").html(countSelectedItems + "项目");
         }
     }
 
-    // 平均分配按钮
-    form.on('checkbox(avg)', function (data) {
-        var trs = $(".transfer-panel-right .transfer-div table tbody").find("tr");
-        var _numInput = trs.find('input[name="' + config.name + '[sum][]"]');
-
-        if (data.elem.checked == false && countSelectedItems > 0) {
-            _numInput.each(function (index) {
-                $(this).val(0);
-            });
-
-        } else {
-            // 没选择销售提示
-            if (countSelectedItems <= 0) {
-                layer.msg('请先选择要分配的销售！');
-                $(".avgbtn").attr("checked", false);
-                form.render();
-                return false;
-            }
-            // 人均少于一个提示
-            if (stunum < countSelectedItems) {
-                layer.msg('学员太少销售不够分了！');
-                $(".avgbtn").attr("checked", false);
-                form.render();
-                return false;
-            }
-            var avg = parseInt(stunum / countSelectedItems);
-            var left = parseInt(stunum % countSelectedItems);
-
-            _numInput.each(function (index) {
-                if (index == _numInput.length - 1) {
-                    $(this).val(avg + left);
-                } else {
-                    $(this).val(avg);
-                }
-            });
-        }
-    });
-
     //穿梭框选中监听
-
     //左侧选中
     form.on('checkbox(transferLeftChecked)', function (data) {
         var $this = $(data.othis);
         var _parent = $this.parents(".transfer-content");
-        var inputs = $this.parents(".transfer-div").find("tr input[type='checkbox']");
-        var checked = $this.parents(".transfer-div").find("tr input[type='checkbox']:checked");
+        var inputs = $this.parents(".transfer-div").find("dd input[type='checkbox']");
+        var checked = $this.parents(".transfer-div").find("dd input[type='checkbox']:checked");
         //去掉顶部全选
         var selectAllLeft = _parent.find(".selectAllLeft");
         if (selectAllLeft.length > 0)
@@ -366,8 +297,8 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
     form.on('checkbox(transferRightChecked)', function (data) {
         var $this = $(data.othis);
         var _parent = $this.parents(".transfer-content");
-        var inputs = $this.parents(".transfer-div").find("tr input[type='checkbox']");
-        var checked = $this.parents(".transfer-div").find("tr input[type='checkbox']:checked");
+        var inputs = $this.parents(".transfer-div").find("dd input[type='checkbox']");
+        var checked = $this.parents(".transfer-div").find("dd input[type='checkbox']:checked");
 
         //去掉顶部全选
         var selectAllRight = _parent.find(".selectAllRight");
@@ -399,8 +330,8 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
 
         var _name = $this.attr("lay-name") || "";
         var $parent = $this.parents(".transfer-content");
-        var inputs = $parent.find(".transfer-panel-right .transfer-div").find("tr input[type='checkbox']");
-        var checked = $parent.find(".transfer-panel-right .transfer-div").find("tr input[type='checkbox']:checked");
+        var inputs = $parent.find(".transfer-panel-right .transfer-div").find("dd input[type='checkbox']");
+        var checked = $parent.find(".transfer-panel-right .transfer-div").find("dd input[type='checkbox']:checked");
         var flag = false;
         for (var i = 0; i < inputs.length; i++) {
             if (data.elem.checked)  //全选
@@ -434,7 +365,7 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
         var $this = $(this);
         var _name = $this.attr("lay-name") || "";
         var $parent = $this.parents(".transfer-content");
-        var inputs = $parent.find(".transfer-panel-left .transfer-div").find("tr input[type='checkbox']");
+        var inputs = $parent.find(".transfer-panel-left .transfer-div").find("dd input[type='checkbox']");
         var flag = false;
         for (var i = 0; i < inputs.length; i++) {
             if (data.elem.checked)  //全选
@@ -468,10 +399,10 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
         var $this = $(this);
         var _name = $this.attr("lay-name") || "";
         var $parent = $this.parents(".transfer-content");
-        var inputs = $parent.find(".transfer-panel-left .transfer-div").find("tr input[type='checkbox']");
-        var inputs_checked = $parent.find(".transfer-panel-left .transfer-div").find("tr input[type='checkbox']:checked");
-        var right_inputs = $parent.find(".transfer-panel-right .transfer-div ").find("tr input[type='checkbox']");
-        var right_checked = $parent.find(".transfer-panel-right .transfer-div").find("tr input[type='checkbox']:checked");
+        var inputs = $parent.find(".transfer-panel-left .transfer-div").find("dd input[type='checkbox']");
+        var inputs_checked = $parent.find(".transfer-panel-left .transfer-div").find("dd input[type='checkbox']:checked");
+        var right_inputs = $parent.find(".transfer-panel-right .transfer-div").find("dd input[type='checkbox']");
+        var right_checked = $parent.find(".transfer-panel-right .transfer-div").find("dd input[type='checkbox']:checked");
         var leftNum = inputs.length;
         var rightNum = right_inputs.length;
         if (leftNum != countAllItems) {
@@ -492,32 +423,20 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
         for (var i = 0; i < inputs.length; i++) {
             if ($(inputs[i]).is(':checked')) {
                 //右侧添加
-                var _value = $(inputs[i]).parents("tr").attr("lay-value");
-                var _keywords = $(inputs[i]).parents("tr").attr("lay-keywords");
-                var _username = $(inputs[i]).parents("tr").attr("lay-username");
-                var _area = $(inputs[i]).parents("tr").attr("lay-area");
-                var _position = $(inputs[i]).parents("tr").attr("lay-position");
-                var _input = [
-                    '<tr lay-value="' + _value + '" lay-keywords="' + _keywords + '" lay-username="' + _username + '" lay-area="' + _area + '"  lay-position="' + _position + '">',
-                    '<td><input type="hidden" name="' + _name + '[id][]" value="' + _value + '" >',
-                    '<input type="checkbox" lay-filter="transferRightChecked" lay-skin="primary"></td>',
-                    '<td>' + _username + '</td>',
-                    '<td>' + _area + '</td>',
-                    '<td hidden>' + _position + '</td>',
-                    '<td><input type="text" name="' + _name + '[sum][]" lay-verify="number|int" value="0" style="width: 50px"  lay-event="editNum"></td>',
-                    '</tr>'
+                var _value = $(inputs[i]).parents("dd").attr("lay-value");
+                var _title = $(inputs[i]).parents("dd").attr("lay-title");
+                var _red = $(inputs[i]).parents("dd").attr("class");
+                var _input = ['<dd lay-value="' + _value + '" lay-title="' + _title + '" class="' + _red + '"><input type="hidden" name="' + _name + '" value="' + _value + '" >',
+                    '<input lay-filter="transferRightChecked"  ',
+                    ' type="checkbox"  title="' + _title + '" lay-skin="primary"></dd>'
                 ].join("");
-                _value && _keywords && _username && _area && _position && $parent.find(".transfer-panel-right .transfer-div table").append(_input);
+                _value && _title && $parent.find(".transfer-panel-right .transfer-div").append(_input);
                 //左侧删除
-                $(inputs[i]).parents("tr").remove();
+                $(inputs[i]).parents("dd").remove();
             }
         }
         //重置按钮禁用
         $parent.find(".transfer-to-right button").addClass("layui-btn-disabled");
-        if (countSelectedItems > 0) {
-            $('.fork').removeClass("layui-btn-disabled");
-            $('.fork').removeAttr("disabled");
-        }
         form.render('checkbox');
     });
 
@@ -525,10 +444,10 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
     $(document).on("click", ".transfer-to-left", function () {
         var $this = $(this);
         var $parent = $this.parents(".transfer-content");
-        var inputs = $parent.find(".transfer-panel-right .transfer-div").find("tr input[type='checkbox']");
-        var inputs_checked = $parent.find(".transfer-panel-right .transfer-div").find("tr input[type='checkbox']:checked");
-        var left_inputs = $parent.find(".transfer-panel-left .transfer-div").find("tr input[type='checkbox']");
-        var left_checked = $parent.find(".transfer-panel-left .transfer-div").find("tr input[type='checkbox']:checked");
+        var inputs = $parent.find(".transfer-panel-right .transfer-div").find("dd input[type='checkbox']");
+        var inputs_checked = $parent.find(".transfer-panel-right .transfer-div").find("dd input[type='checkbox']:checked");
+        var left_inputs = $parent.find(".transfer-panel-left .transfer-div").find("dd input[type='checkbox']");
+        var left_checked = $parent.find(".transfer-panel-left .transfer-div").find("dd input[type='checkbox']:checked");
         var rightNum = inputs.length;
         var leftNum = left_inputs.length;
 
@@ -549,32 +468,21 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
 
         for (var i = 0; i < inputs.length; i++) {
             if ($(inputs[i]).is(':checked')) {
-                //左侧添加
-                var _value = $(inputs[i]).parents("tr").attr("lay-value");
-                var _keywords = $(inputs[i]).parents("tr").attr("lay-keywords");
-                var _username = $(inputs[i]).parents("tr").attr("lay-username");
-                var _area = $(inputs[i]).parents("tr").attr("lay-area");
-                var _position = $(inputs[i]).parents("tr").attr("lay-position");
-
-                var _input = [
-                    '<tr lay-value="' + _value + '" lay-keywords="' + _keywords + '" lay-username="' + _username + '" lay-area="' + _area + '"  lay-position="' + _position + '">',
-                    '<td><input type="checkbox" lay-filter="transferLeftChecked" lay-skin="primary"></td>',
-                    '<td>' + _username + '</td>',
-                    '<td>' + _area + '</td>',
-                    '<td>' + _position + '</td>',
-                    '</tr>'
+                //右侧添加
+                var _value = $(inputs[i]).parents("dd").attr("lay-value");
+                var _title = $(inputs[i]).parents("dd").attr("lay-title");
+                var _red = $(inputs[i]).parents("dd").attr("class");
+                var _input = ['<dd lay-value="' + _value + '" lay-title="' + _title + '" class="' + _red + '">',
+                    '<input lay-filter="transferLeftChecked"  ',
+                    ' type="checkbox"  title="' + _title + '" lay-skin="primary"></dd>'
                 ].join("");
-                _value && _keywords && _username && _area && _position && $parent.find(".transfer-panel-left .transfer-div table").append(_input);
+                _value && _title && $parent.find(".transfer-panel-left .transfer-div").append(_input);
                 //右侧删除
-                $(inputs[i]).parents("tr").remove();
+                $(inputs[i]).parents("dd").remove();
             }
         }
         //重置按钮禁用
         $parent.find(".transfer-to-left button").addClass("layui-btn-disabled");
-        if (countSelectedItems <= 0) {
-            $('.fork').addClass("layui-btn-disabled");
-            $('.fork').attr("disabled", "disabled");
-        }
         form.render('checkbox');
 
     });
@@ -630,30 +538,32 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
         var value = $($this).val();
         var $parent = $this.parents(".transfer-content");
         if (position == 'left') {
-            var trs = $parent.find(".transfer-panel-left .transfer-div table tbody").find("tr");
+            var dds = $parent.find(".transfer-panel-left .transfer-div").find("dd");
         } else {
-            var trs = $parent.find(".transfer-panel-right .transfer-div table tbody").find("tr");
+            var dds = $parent.find(".transfer-panel-right .transfer-div").find("dd");
         }
         //显示搜索结果菜单
         var k = value;
         var patt = new RegExp(k);
-        for (var i = 0; i < trs.length; i++) {
-            var formData = $(trs[i]).attr("lay-keywords").split('|');
+        for (var i = 0; i < dds.length; i++) {
             if (k == "") {
-                $(trs[i]).show();
+                $(dds[i]).show();
             }
-            else if (patt.test(formData[0]) || patt.test(formData[1])) {
-                $(trs[i]).show();
+            else if (patt.test($(dds[i]).attr("lay-title"))) {
+                $(dds[i]).show();
             }
             else {
-                $(trs[i]).hide();
+                $(dds[i]).hide();
             }
+
+
             if (PinyinMatch != undefined)  //拼音匹配,需要引入PinyinMatch.js
             {
-                if (PinyinMatch.match($(trs[i]).attr("lay-keywords"), k))
-                    $(trs[i]).show()
+                if (PinyinMatch.match($(dds[i]).attr("lay-title"), k))
+                    $(dds[i]).show();
             }
         }
+
     }
 
     //输出test接口
