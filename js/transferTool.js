@@ -192,7 +192,7 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
                     if (_values.indexOf(data[i].id) == -1) {
                         // 左侧插入数据
                         var _input = [
-                            '<tr lay-value="' + data[i].id + '" lay-keywords="' + data[i].area + '|' + data[i].position + '" lay-username="' + data[i].username + '" lay-area="' + data[i].area + '"  lay-position="' + data[i].position + '">',
+                            '<tr lay-value="' + data[i].id + '" lay-keywords="' + data[i].area + '|' + data[i].username + '" lay-username="' + data[i].username + '" lay-area="' + data[i].area + '"  lay-position="' + data[i].position + '">',
                             '<td><input type="checkbox" lay-filter="transferLeftChecked" lay-skin="primary"></td>',
                             '<td>' + data[i].username + '</td>',
                             '<td>' + data[i].area + '</td>',
@@ -209,7 +209,7 @@ layui.define(['element', 'form', 'jquery', 'table'], function (exports) {
                     // 右侧插入数据
                     else {
                         var _input = [
-                            '<tr lay-value="' + data[i].id + '" lay-keywords="' + data[i].area + '|' + data[i].position + '" lay-username="' + data[i].username + '" lay-area="' + data[i].area + '"  lay-position="' + data[i].position + '">',
+                            '<tr lay-value="' + data[i].id + '" lay-keywords="' + data[i].area + '|' + data[i].username + '" lay-username="' + data[i].username + '" lay-area="' + data[i].area + '"  lay-position="' + data[i].position + '">',
                             '<td><input type="hidden" name="' + _name + '[id][]" value="' + data[i].id + '" >' +
                             '<input type="checkbox" lay-filter="transferRightChecked" lay-skin="primary"></td>',
                             '<td>' + data[i].username + '</td>',
